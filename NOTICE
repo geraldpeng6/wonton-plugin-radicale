@@ -1,10 +1,13 @@
 图标
 ====
 
-`icon.svg` 为本仓库原创，按插件规范的线条风格手写，未用图片模型生成。从模板新建的插件换成自己的图标时，这里按实际情况重写。
+`icon.svg` 为本仓库原创（日历加联系人的线条画），按插件规范的线条风格手写，未用图片模型生成。
+Radicale 项目没有发布官方标志，故未使用上游素材。
 
 许可证
 ------
+
+本插件包（清单、配置、脚本、图标、文档）按 MIT 许可证分发：
 
 MIT License
 
@@ -27,3 +30,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+本插件运行的 Radicale 由 Kozea Community 开发，采用 GNU General Public License v3.0
+授权（https://github.com/Kozea/Radicale），本插件使用其官方镜像
+`ghcr.io/kozea/radicale`，不修改上游源码。Radicale 名称归其项目作者所有，
+本插件与 Radicale 项目无隶属或背书关系。
