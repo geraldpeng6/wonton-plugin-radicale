@@ -9,9 +9,10 @@ web_assert() { grep -q 'Radicale Web Interface'; }   # /.web/ 内置管理页的
 identity_check() {
   local prop resp code
   if [[ -n "${SMOKE_WEB_ORIGIN:-}" ]]; then
-    code="$(curl_t "$SMOKE_WEB_MAX_TIME" "$SMOKE_WEB_ORIGIN/" --noproxy '*' -s -o /dev/null \
-      -w '%{http_code}' -X PROPFIND -H 'Depth: 0')" || code="curl 失败"
-    [[ "$code" == 401 ]] || { echo "匿名 PROPFIND 返回 $code，不是 401"; return 1; }
+    # curl_t 对 4xx 以 22 退出，但 -w 已把状态码打到标准输出，不能因退出码覆盖它。
+    code="$(curl_t "$SMOKE_WEB_MAX_TIME" "$SMOKE_WEB_ORIGIN/" --noproxy '*' -o /dev/null \
+      -w '%{http_code}' -X PROPFIND -H 'Depth: 0' 2>/dev/null || true)"
+    [[ "$code" == 401 ]] || { echo "匿名 PROPFIND 返回 ${code:-（无响应）}，不是 401"; return 1; }
   fi
   prop='<?xml version="1.0" encoding="utf-8"?><propfind xmlns="DAV:"><prop><current-user-principal/></prop></propfind>'
   resp="$(dweb "/" -X PROPFIND -H "Depth: 0" -H "Content-Type: application/xml" --data "$prop")" ||

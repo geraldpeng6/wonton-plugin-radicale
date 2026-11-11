@@ -21,7 +21,11 @@ services:
     # 镜像固定以 uid 1000（radicale 用户）运行，数据目录按这个属主交给容器。
     user: "1000:1000"
     # 覆盖镜像 CMD 时带上原默认的 --hosts（默认配置只听 127.0.0.1，见 radicale.org/v3.html 的 Addresses）。
-    command: ["--hosts", "0.0.0.0:5232,[::]:5232", "--auth-type", "http_x_remote_user"]
+    # prefer_browser_login：内置管理页探测登录状态时默认 fetch 不带 Cookie（credentials: 'omit'，
+    # 镜像内 web/internal_data/js/scenes/LoginScene.js），在靠会话 Cookie 认证的网关后面会一直停在登录页；
+    # 设 true 让它带 Cookie 发探测，网关注入 X-Remote-User 后管理页自动登录（镜像内 web/internal.py 动态
+    # 生成的 config.js 读这个配置）。
+    command: ["--hosts", "0.0.0.0:5232,[::]:5232", "--auth-type", "http_x_remote_user", "--web-prefer-browser-login", "True"]
     volumes:
       # 存储默认路径就是 /var/lib/radicale/collections，不用另写配置。
       - ${WONTON_APP_DATA}/collections:/var/lib/radicale/collections
