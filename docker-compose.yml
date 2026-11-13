@@ -17,7 +17,7 @@ services:
   # X-Remote-User 头，靠网络隔离兜底：没申请 network.egress，插件网络是内部网络，能连到这个服务的
   # 只有核心和本插件的服务（宿主、局域网、其他插件都连不进来），网关转发前还会删掉客户端伪造的同名头。
   web:
-    image: ghcr.io/kozea/radicale:3.9.0@sha256:f68a99907f44b09dc12d81c3a1cdf221e3c55f08ceccfa17dc012991be9fb397
+    image: ghcr.io/kozea/radicale:3.9.1@sha256:e5e53d3f77566a8b4ca3e307d950e75c9b82b38d11e953c0394a342e3aa25c90
     # 镜像固定以 uid 1000（radicale 用户）运行，数据目录按这个属主交给容器。
     user: "1000:1000"
     # 覆盖镜像 CMD 时带上原默认的 --hosts（默认配置只听 127.0.0.1，见 radicale.org/v3.html 的 Addresses）。
@@ -40,7 +40,7 @@ services:
   # 手机客户端入口：HTTP Basic 认证，账号由一次性服务按核心生成的密码写好（见 init）。
   # iOS 日历/通讯录、Android DAVx⁵、Thunderbird 都连这个端口。
   dav:
-    image: ghcr.io/kozea/radicale:3.9.0@sha256:f68a99907f44b09dc12d81c3a1cdf221e3c55f08ceccfa17dc012991be9fb397
+    image: ghcr.io/kozea/radicale:3.9.1@sha256:e5e53d3f77566a8b4ca3e307d950e75c9b82b38d11e953c0394a342e3aa25c90
     user: "1000:1000"
     command:
       - --hosts
@@ -70,7 +70,7 @@ services:
   # 每次容器重建都重跑：同一把密钥算出的哈希等价，先写临时文件再改名，dav 运行中读到的一直是完整文件
   #（htpasswd 模块按文件 mtime 自动重读）。
   init:
-    image: ghcr.io/kozea/radicale:3.9.0@sha256:f68a99907f44b09dc12d81c3a1cdf221e3c55f08ceccfa17dc012991be9fb397
+    image: ghcr.io/kozea/radicale:3.9.1@sha256:e5e53d3f77566a8b4ca3e307d950e75c9b82b38d11e953c0394a342e3aa25c90
     user: "1000:1000"
     entrypoint: ["/bin/sh", "/tmp/create-users.sh"]
     environment:
